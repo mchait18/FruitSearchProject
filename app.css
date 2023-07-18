@@ -2,12 +2,6 @@
     box-sizing: border-box;
 }
 
-input :focus {
-    outline-color: #ff5500;
-    outline-style: solid;
-    outline-width: 1px;
-}
-
 html {
     height: 100%;
     background: rgb(250, 206, 0);
@@ -50,7 +44,7 @@ ul {
 
     margin-top: 0;
     padding-left: 0;
-    background: #ffffff1c;
+    /* background: #ffffff1c; */
     box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.2);
 }
 
@@ -67,9 +61,4 @@ li {
 
 ul li:hover {
     background-color: rgb(236, 104, 16);
-}
-
-::placeholder {
-    color: rgba(0, 0, 0, 0.596);
-    font-size: 1em;
 }
