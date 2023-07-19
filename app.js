@@ -84,22 +84,9 @@ const fruit = [
 ];
 
 function search(str) {
-  let results = [];
-  let newFruit = "";
-  let begWord = "";
-  let endWord = "";
-  let midword = "";
-  for (let oneFruit of fruit) {
-    const indx = oneFruit.toLowerCase().indexOf(str.toLowerCase());
-    if (indx !== -1) {
-      indx === 0 ? (begWord = "") : (begWord = oneFruit.slice(0, indx));
-      midword = oneFruit.slice(indx, indx + str.length);
-      endWord = oneFruit.slice(indx + str.length);
-      newFruit = begWord + midword.bold() + endWord;
-      results.push(newFruit);
-    }
-  }
-  return results;
+  return fruit.filter(
+    (oneFruit) => oneFruit.toLowerCase().indexOf(str.toLowerCase()) !== -1
+  );
 }
 
 function searchHandler(e) {
@@ -109,11 +96,12 @@ function searchHandler(e) {
   }
   const results = search(input.value);
 
-  if (input.value !== "") showSuggestions(results, results.length);
+  if (input.value !== "") showSuggestions(results, input.value);
 }
 
 function showSuggestions(results, inputVal) {
-  for (let result of results) {
+  const boldedRes = boldSelection(results, inputVal);
+  for (let result of boldedRes) {
     let newResult = document.createElement("li");
     newResult.innerHTML = result;
     suggestions.append(newResult);
@@ -121,11 +109,35 @@ function showSuggestions(results, inputVal) {
 }
 
 function useSuggestion(e) {
-  input.value = e.target.innerText;
+  if (e.target.nodeName === "LI") {
+    input.value = e.target.innerText;
+  } else {
+    input.value = e.target.parentNode.innerText;
+  }
+
   const suggestionsArr = document.querySelectorAll("li");
   for (let sug of suggestionsArr) {
     sug.remove();
   }
+}
+
+function boldSelection(arr, str) {
+  let boldedResults = [];
+  let newFruit = "";
+  let begWord = "";
+  let endWord = "";
+  let midword = "";
+  for (let oneFruit of arr) {
+    const indx = oneFruit.toLowerCase().indexOf(str.toLowerCase());
+    if (indx !== -1) {
+      indx === 0 ? (begWord = "") : (begWord = oneFruit.slice(0, indx));
+      midword = oneFruit.slice(indx, indx + str.length);
+      endWord = oneFruit.slice(indx + str.length);
+      newFruit = begWord + `<b>${midword}</b>` + endWord;
+      boldedResults.push(newFruit);
+    }
+  }
+  return boldedResults;
 }
 
 input.addEventListener("keyup", searchHandler);
